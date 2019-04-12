@@ -1,0 +1,57 @@
+version: 2.1
+
+orbs:
+  general: edahlseng/general@1.17.1
+
+workflows:
+  main:
+    jobs:
+      - general/install-dependencies-npm
+      - general/lint-commit:
+          requires:
+            - general/install-dependencies-npm
+      - general/lint-js:
+          requires:
+            - general/install-dependencies-npm
+      - general/lint-json:
+          requires:
+            - general/install-dependencies-npm
+      - general/lint-yaml:
+          requires:
+            - general/install-dependencies-npm
+      - general/create-release-pr:
+          context: Release Bot
+          git-ssh-fingerprint: ef:2c:f6:02:23:94:7c:ea:53:87:b6:d0:b3:ea:88:82
+          git-user-email: edahlseng@users.noreply.github.com
+          git-user-name: "Release Bot"
+          github-access-token: $RELEASE_BOT_GITHUB_TOKEN
+          requires:
+            - general/lint-commit
+            - general/lint-js
+            - general/lint-json
+            - general/lint-yaml
+          filters:
+            branches:
+              only: master
+      - general/tag-and-publish-npm:
+          context: NPM Publish - @eric.dahlseng
+          git-ssh-fingerprint: ef:2c:f6:02:23:94:7c:ea:53:87:b6:d0:b3:ea:88:82
+          git-user-email: edahlseng@users.noreply.github.com
+          git-user-name: "Release Bot"
+          npm-authentication-token: $NPM_AUTH_TOKEN
+          requires:
+            - general/lint-commit
+            - general/lint-js
+            - general/lint-json
+            - general/lint-yaml
+          filters:
+            branches:
+              only: master
+      - general/create-github-release:
+          context: Release Bot
+          github-access-token: $RELEASE_BOT_GITHUB_TOKEN
+          requires:
+            - general/tag-and-publish-npm
+          filters:
+            branches:
+              only: master
