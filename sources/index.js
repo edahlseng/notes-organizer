@@ -32,7 +32,6 @@ import {
 	over,
 	lensProp,
 	assocPath,
-	reverse,
 	add,
 	max,
 	min,
@@ -584,7 +583,6 @@ const addFoldersToState = getAllFoldersWithChildrenFolders()
 
 const addNotesToTriageToState = getNotesOfFolder("Notes")
 	.map(sortBy(prop("modificationDate")))
-	.map(reverse)
 	.chain(
 		pipe(
 			assoc("notesToTriage"),
