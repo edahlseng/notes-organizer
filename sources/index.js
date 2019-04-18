@@ -39,6 +39,7 @@ import {
 	juxt,
 	isNil,
 	remove,
+	filter,
 } from "ramda";
 import { Input, Output, State, run } from "eff";
 
@@ -583,6 +584,7 @@ const addFoldersToState = getAllFoldersWithChildrenFolders()
 
 const addNotesToTriageToState = getNotesOfFolder("Notes")
 	.map(sortBy(prop("modificationDate")))
+	.map(filter(note => note.name !== "Daily Focus"))
 	.chain(
 		pipe(
 			assoc("notesToTriage"),

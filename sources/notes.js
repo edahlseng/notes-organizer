@@ -6,6 +6,15 @@ import { Eff, send, interpreter } from "eff";
 
 import applescript from "@eric.dahlseng/applescript";
 
+const zip3 = (x, y, z) => {
+	const length = Math.min(x.length, y.length, z.length);
+	const result = new Array(length);
+	for (let i = 0; i < length; i++) {
+		result[i] = [x[i], y[i], z[i]];
+	}
+	return result;
+};
+
 const Notes = daggy.taggedSum("Notes", {
 	openFolder: ["folderName"],
 	getAllFoldersWithChildrenFolders: [],
@@ -55,12 +64,14 @@ export const interpretNotes = interpreter({
 			},
 			getNotesOfFolder: folderName => continuation => {
 				applescript.execString(
-					`tell application "Notes" to get {id, modification date} of notes in folder "${folderName}"`,
+					`tell application "Notes" to get {id, name, modification date} of notes in folder "${folderName}"`,
 					(err, result) =>
 						continuation(
-							map(([id, modificationDate]) => ({ id, modificationDate }))(
-								zip(result[0], result[1]),
-							),
+							map(([id, name, modificationDate]) => ({
+								id,
+								modificationDate,
+								name,
+							}))(zip3(result[0], result[1], result[2])),
 						),
 				);
 			},
