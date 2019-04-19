@@ -230,8 +230,9 @@ const moveNoteBasedOnCurrentInput = State.get()
 				prop("id"),
 			),
 			state =>
-				state.currentInput.eligibleFolders[state.currentInput.selectedIndex]
-					.name,
+				path(["name"])(
+					state.currentInput.eligibleFolders[state.currentInput.selectedIndex],
+				),
 		]),
 	)
 	.chain(
