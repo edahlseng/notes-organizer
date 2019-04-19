@@ -53,15 +53,10 @@ import {
 	deleteNote,
 	createFolder,
 } from "./notes.js";
-import {
-	activateApplication,
-	getFrontmostApplication,
-	interpretSystem,
-} from "./system.js";
+import { activateApplication, interpretSystem } from "./system.js";
 
 // eslint-disable-next-line
 const exampleState = {
-	frontmostApplication: "",
 	folders: {
 		containerMap: {},
 		allFolders: { name: "", containers: [] },
@@ -247,11 +242,7 @@ const moveNoteBasedOnCurrentInput = State.get()
 		),
 	);
 
-const activateSelf = always(
-	State.get()
-		.map(prop("frontmostApplication"))
-		.chain(activateApplication),
-);
+const activateSelf = always(activateApplication("Terminal"));
 
 const showCurrentNote = always(
 	State.get()
@@ -593,14 +584,7 @@ const addNotesToTriageToState = getNotesOfFolder("Notes")
 		),
 	);
 
-const application = getFrontmostApplication()
-	.chain(
-		pipe(
-			assoc("frontmostApplication"),
-			State.modify,
-		),
-	)
-	.chain(always(openFolder("Notes")))
+const application = openFolder("Notes")
 	.chain(always(addFoldersToState))
 	.chain(always(addNotesToTriageToState))
 	.chain(activateSelf)
