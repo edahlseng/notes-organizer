@@ -468,7 +468,7 @@ function keyStrokeLoop() {
 					.map(suffix(`\n`))
 					.join(
 						"",
-					)}(^d = delete, ^n = new folder, ^r = reshow, ^s = skip)${cursorUpLines(
+					)}(^c = close, ^d = delete, ^n = new folder, ^r = reshow, ^s = skip)${cursorUpLines(
 					currentInput.eligibleFolders.length + 1,
 				)}${cursorHorizontalPosition(45 + currentInput.substring.length)}`,
 			),
