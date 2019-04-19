@@ -6,6 +6,7 @@ import {
 	__,
 	always,
 	assoc,
+	concat,
 	pipe,
 	prop,
 	reduce,
@@ -330,7 +331,19 @@ function folderNameLoop({ folderName, parentFolderName }) {
 						shift: false,
 						string: "\r",
 					}),
-					always(createFolder({ folderName, parentFolderName })),
+					always(
+						createFolder({ folderName, parentFolderName }).chain(
+							always(
+								State.modify(
+									over(lensPath(["folders", "allFolders"]))(
+										concat([
+											{ name: folderName, containers: [parentFolderName] },
+										]),
+									),
+								),
+							),
+						),
+					),
 				],
 				[
 					equals({
