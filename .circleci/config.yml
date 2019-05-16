@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  general: edahlseng/general@1.18.0
+  general: edahlseng/general@1.19.1
 
 workflows:
   main:
@@ -19,6 +19,17 @@ workflows:
       - general/lint-yaml:
           requires:
             - general/install-dependencies-npm
+      - general/validate-js:
+          requires:
+            - general/install-dependencies-npm
+      - general/build:
+          executor: general/node
+          requires:
+            - general/install-dependencies-npm
+      - general/test:
+          executor: general/node
+          requires:
+            - general/build
       - general/create-release-pr:
           context: Release Bot
           git-ssh-fingerprint: ef:2c:f6:02:23:94:7c:ea:53:87:b6:d0:b3:ea:88:82
@@ -30,6 +41,9 @@ workflows:
             - general/lint-js
             - general/lint-json
             - general/lint-yaml
+            - general/validate-js
+            - general/build
+            - general/test
           filters:
             branches:
               only: master
@@ -44,6 +58,9 @@ workflows:
             - general/lint-js
             - general/lint-json
             - general/lint-yaml
+            - general/validate-js
+            - general/build
+            - general/test
           filters:
             branches:
               only: master
