@@ -42,19 +42,18 @@ import {
 	remove,
 	filter,
 } from "ramda";
-import { Input, Output, State, run } from "eff";
+import { Input, Output, State } from "eff";
 
 import {
 	getNotesOfFolder,
 	openFolder,
 	getAllFoldersWithChildrenFolders,
 	showNote,
-	interpretNotes,
 	moveNoteToFolder,
 	deleteNote,
 	createFolder,
 } from "./notes.js";
-import { activateApplication, interpretSystem } from "./system.js";
+import { activateApplication } from "./system.js";
 
 // eslint-disable-next-line
 const exampleState = {
@@ -605,16 +604,8 @@ const addNotesToTriageToState = getNotesOfFolder("Notes")
 		),
 	);
 
-const application = openFolder("Notes")
+export const application = openFolder("Notes")
 	.chain(always(addFoldersToState))
 	.chain(always(addNotesToTriageToState))
 	.chain(activateSelf)
 	.chain(mainLoop);
-
-run(
-	Output.interpretOutputStdOut,
-	Input.interpretInputStdIn,
-	State.interpretState({ currentNoteIndex: 0 }),
-	interpretSystem,
-	interpretNotes,
-)(() => console.log("All done"))(application); // eslint-disable-line no-console, no-undef
