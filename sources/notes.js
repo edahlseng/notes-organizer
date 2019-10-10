@@ -47,13 +47,13 @@ export const interpretNotes = interpreter({
 		notesEffect.cata({
 			openFolder: folderName => continuation => {
 				applescript.execString(
-					`tell application "Notes" to show folder "${folderName}"`,
+					`tell application "Notes" to show folder "${folderName}" of account "iCloud"`,
 					(err, result) => continuation(result),
 				);
 			},
 			getAllFoldersWithChildrenFolders: () => continuation => {
 				applescript.execString(
-					`tell application "Notes" to get {name, name of folders} of folders`,
+					`tell application "Notes" to get {name, name of folders} of folders of account "iCloud"`,
 					(err, result) =>
 						continuation(
 							map(([name, folders]) => ({ name, folders }))(
@@ -64,7 +64,7 @@ export const interpretNotes = interpreter({
 			},
 			getNotesOfFolder: folderName => continuation => {
 				applescript.execString(
-					`tell application "Notes" to get {id, name, modification date} of notes in folder "${folderName}"`,
+					`tell application "Notes" to get {id, name, modification date} of notes in folder "${folderName}" in account "iCloud"`,
 					(err, result) =>
 						continuation(
 							map(([id, name, modificationDate]) => ({
@@ -77,27 +77,27 @@ export const interpretNotes = interpreter({
 			},
 			getFoldersOfFolder: folderName => continuation =>
 				applescript.execString(
-					`tell application "Notes" to get name of folders of folder "${folderName}"`,
+					`tell application "Notes" to get name of folders of folder "${folderName}" in account "iCloud"`,
 					(err, result) => continuation(result),
 				),
 			showNote: noteId => continuation =>
 				applescript.execString(
-					`tell application "Notes" to show note id "${noteId}"`,
+					`tell application "Notes" to show note id "${noteId}" of account "iCloud"`,
 					(err, result) => continuation(result),
 				),
 			moveNoteToFolder: (noteId, folderName) => continuation =>
 				applescript.execString(
-					`tell application "Notes" to move note id "${noteId}" to folder "${folderName}"`,
+					`tell application "Notes" to move note id "${noteId}" of account "iCloud" to folder "${folderName}" in account "iCloud"`,
 					(err, result) => continuation(result),
 				),
 			deleteNote: noteId => continuation =>
 				applescript.execString(
-					`tell application "Notes" to delete note id "${noteId}"`,
+					`tell application "Notes" to delete note id "${noteId}" in account "iCloud"`,
 					(err, result) => continuation(result),
 				),
 			createFolder: (folderName, parentFolderName) => continuation =>
 				applescript.execString(
-					`tell application "Notes" to make new folder at folder "${parentFolderName}" with properties {name: "${folderName}"}`,
+					`tell application "Notes" to make new folder at folder "${parentFolderName}" in account "iCloud" with properties {name: "${folderName}"}`,
 					(err, result) => continuation(result),
 				),
 		}),
