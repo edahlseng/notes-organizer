@@ -17,7 +17,8 @@
     "lint-report:yaml": "mkdir -p ./linting-results/prettier-yaml && prettier-junit --config .prettierrc.js '**/*.yaml' '**/*.yml' > ./linting-results/prettier-yaml/report.xml",
     "prepare": "npm run build",
     "release": "standard-version",
-    "test": "ava ./dist/**/*.test.*",
+    "test": "ava ./sources/**/*.test.*",
+    "test-report": "mkdir -p test-results && ava --tap ./dist/**/*.test.* | tap-xunit > ./test-results/ava.xml",
     "validate": "npm run validate:js",
     "validate:js": "flow check"
   },
@@ -43,11 +44,13 @@
     "@eric.dahlseng/linter-configuration": "^0.3.0",
     "@eric.dahlseng/standard-version": "^1.0.3",
     "ava": "^1.1.0",
-    "flow-bin": "^0.109.0"
+    "flow-bin": "^0.109.0",
+    "tap-xunit": "^2.4.1"
   },
   "ava": {
-    "babel": false,
-    "compileEnhancements": false
+    "require": [
+      "@babel/register"
+    ]
   },
   "babel": {
     "extends": "./node_modules/@eric.dahlseng/configuration-build/babelrc.browser.json"
