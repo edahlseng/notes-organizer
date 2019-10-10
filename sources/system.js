@@ -7,6 +7,8 @@ import applescript from "@eric.dahlseng/applescript";
 const System = daggy.taggedSum("System", {
 	getFrontmostApplication: [],
 	activateApplication: ["applicationName"],
+	keyPress: ["key"],
+	keyCode: ["code"],
 });
 
 export const getFrontmostApplication = () =>
@@ -15,11 +17,27 @@ export const getFrontmostApplication = () =>
 export const activateApplication = applicationName =>
 	send(System.activateApplication(applicationName));
 
+export const keyPress = k => send(System.keyPress(k));
+
+export const keyCode = k => send(System.keyCode(k));
+
 export const interpretSystem = interpreter({
 	onPure: Eff.Pure,
 	predicate: x => System.is(x),
 	handler: systemEventsEffect =>
 		systemEventsEffect.cata({
+			keyPress: k => continuation => {
+				applescript.execString(
+					`tell application "System Events" to keystroke "${k}"`,
+					(err, result) => continuation(result),
+				);
+			},
+			keyCode: k => continuation => {
+				applescript.execString(
+					`tell application "System Events" to key code ${k}`,
+					(err, result) => continuation(result),
+				);
+			},
 			getFrontmostApplication: () => continuation => {
 				applescript.execString(
 					'tell application "System Events" to get name of first application process whose frontmost is true',
