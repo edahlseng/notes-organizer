@@ -81,7 +81,15 @@ const nameLengthDifference = pipe(
 	apply(subtract),
 );
 
-export const folderSubstringSort = (a, b) =>
+type FolderSubstringDetails = {
+	name: string,
+	containers: Array<string>,
+	substringStart: number,
+};
+export const folderSubstringSort = (
+	a: FolderSubstringDetails,
+	b: FolderSubstringDetails,
+) =>
 	cond([
 		[
 			both(

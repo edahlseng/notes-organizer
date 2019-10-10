@@ -14,12 +14,12 @@ const System = daggy.taggedSum("System", {
 export const getFrontmostApplication = () =>
 	send(System.getFrontmostApplication);
 
-export const activateApplication = applicationName =>
+export const activateApplication = (applicationName: string) =>
 	send(System.activateApplication(applicationName));
 
-export const keyPress = k => send(System.keyPress(k));
+export const keyPress = (k: string) => send(System.keyPress(k));
 
-export const keyCode = k => send(System.keyCode(k));
+export const keyCode = (k: string) => send(System.keyCode(k));
 
 export const interpretSystem = interpreter({
 	onPure: Eff.Pure,
