@@ -26,19 +26,25 @@ const Notes = daggy.taggedSum("Notes", {
 	createFolder: ["folderName", "parentFolderName"],
 });
 
-export const openFolder = folderName => send(Notes.openFolder(folderName));
+export const openFolder = (folderName: string) =>
+	send(Notes.openFolder(folderName));
 export const getAllFoldersWithChildrenFolders = () =>
 	send(Notes.getAllFoldersWithChildrenFolders);
-export const getNotesOfFolder = folderName =>
+export const getNotesOfFolder = (folderName: string) =>
 	send(Notes.getNotesOfFolder(folderName));
-export const getFoldersOfFolder = folderName =>
+export const getFoldersOfFolder = (folderName: string) =>
 	send(Notes.getFoldersOfFolder(folderName));
-export const showNote = noteId => send(Notes.showNote(noteId));
-export const moveNoteToFolder = (noteId, folderName) =>
+export const showNote = (noteId: string) => send(Notes.showNote(noteId));
+export const moveNoteToFolder = (noteId: string, folderName: string) =>
 	send(Notes.moveNoteToFolder(noteId, folderName));
-export const deleteNote = noteId => send(Notes.deleteNote(noteId));
-export const createFolder = ({ folderName, parentFolderName }) =>
-	send(Notes.createFolder(folderName, parentFolderName));
+export const deleteNote = (noteId: string) => send(Notes.deleteNote(noteId));
+export const createFolder = ({
+	folderName,
+	parentFolderName,
+}: {
+	folderName: string,
+	parentFolderName: string,
+}) => send(Notes.createFolder(folderName, parentFolderName));
 
 export const interpretNotes = interpreter({
 	onPure: Eff.Pure,

@@ -17,7 +17,9 @@
     "lint-report:yaml": "mkdir -p ./linting-results/prettier-yaml && prettier-junit --config .prettierrc.js '**/*.yaml' '**/*.yml' > ./linting-results/prettier-yaml/report.xml",
     "prepare": "npm run build",
     "release": "standard-version",
-    "test": "ava ./dist/**/*.test.*"
+    "test": "ava ./dist/**/*.test.*",
+    "validate": "npm run validate:js",
+    "validate:js": "flow check"
   },
   "repository": {
     "type": "git",
@@ -40,7 +42,8 @@
     "@eric.dahlseng/configuration-build": "^0.1.0",
     "@eric.dahlseng/linter-configuration": "^0.3.0",
     "@eric.dahlseng/standard-version": "^1.0.3",
-    "ava": "^1.1.0"
+    "ava": "^1.1.0",
+    "flow-bin": "^0.109.0"
   },
   "ava": {
     "babel": false,
