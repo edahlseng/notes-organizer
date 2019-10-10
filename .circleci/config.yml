@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  general: edahlseng/general@1.22.0
+  general: edahlseng/general@1.23.1
 
 workflows:
   main:
