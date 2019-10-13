@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /* @flow */
 
 import { Input, Output, State, run } from "eff";
